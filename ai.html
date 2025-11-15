@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Personal Safety Guardian</title>
+<style>
+/* Original CSS unchanged */
+* {margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;}
+body {background:linear-gradient(135deg,#1a1a2e,#16213e); min-height:100vh; color:#e2e8f0; line-height:1.6; padding:20px;}
+.container{max-width:800px; margin:0 auto;}
+.header{text-align:center; margin-bottom:30px;}
+.logo{display:flex; align-items:center; justify-content:center; gap:15px; margin-bottom:15px;}
+.logo-icon{width:60px; height:60px; background:linear-gradient(135deg,#cfa109,#cfa109); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:24px; color:white;}
+h1{font-size:2.5rem; background:linear-gradient(135deg,#cfa109,#cfa109); -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-bottom:10px;}
+.tagline{color:#94a3b8; font-size:1.1rem;}
+.status-bar{background:rgba(123,44,191,0.1); backdrop-filter:blur(10px); border:1px solid rgba(123,44,191,0.2); padding:15px; border-radius:15px; display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;}
+.status-indicator{display:flex; align-items:center; gap:10px;}
+.status-dot{width:12px; height:12px; background:#10b981; border-radius:50%; animation:pulse 1.5s infinite;}
+.status-dot.emergency{background:#cfa109; animation:emergencyPulse 0.5s infinite;}
+.settings-btn{background:rgba(255,255,255,0.1); border:none; color:white; padding:8px; border-radius:50%; cursor:pointer; font-size:16px;}
+.main-interface{background:rgba(255,255,255,0.05); backdrop-filter:blur(10px); border:1px solid rgba(255,255,255,0.1); border-radius:15px; padding:20px; margin-bottom:20px;}
+.conversation-area{height:300px; overflow-y:auto; margin-bottom:20px; padding:15px; background:rgba(15,23,42,0.3); border-radius:10px;}
+.message{margin-bottom:15px; display:flex;}
+.message.user-message{justify-content:flex-end;}
+.message.Panic-message{justify-content:flex-start;}
+.message-content{max-width:80%; padding:12px 15px; border-radius:15px;}
+.user-message .message-content{background:linear-gradient(135deg,#cfa109,#cfa109); color:white;}
+.Panic-message .message-content{background:rgba(148,163,184,0.1); border:1px solid rgba(148,163,184,0.2);}
+.timestamp{font-size:0.7rem; opacity:0.7; margin-top:5px;}
+.voice-indicator{display:flex; justify-content:center; margin-bottom:15px;}
+.voice-visualizer{display:flex; align-items:center; gap:4px; height:40px; padding:10px 15px; background:rgba(123,44,191,0.1); border-radius:20px;}
+.wave-bar{width:3px; height:8px; background:linear-gradient(to top,#cfa109,#cfa109); border-radius:2px; animation:wave 1.2s ease-in-out infinite;}
+.wave-bar:nth-child(1){animation-delay:0s;height:10px;}
+.wave-bar:nth-child(2){animation-delay:0.1s;height:15px;}
+.wave-bar:nth-child(3){animation-delay:0.2s;height:20px;}
+.wave-bar:nth-child(4){animation-delay:0.3s;height:25px;}
+.wave-bar:nth-child(5){animation-delay:0.4s;height:20px;}
+.wave-bar:nth-child(6){animation-delay:0.5s;height:15px;}
+.wave-bar:nth-child(7){animation-delay:0.6s;height:10px;}
+.instructions{text-align:center; color:#94a3b8; font-size:0.9rem; margin-bottom:10px;}
+.emergency-panel{position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(255,107,53,0.95); display:none; align-items:center; justify-content:center; z-index:1000;}
+.emergency-content{background:white; border-radius:15px; padding:30px; max-width:400px; width:90%; text-align:center;}
+.emergency-icon{font-size:3rem; margin-bottom:15px; animation:spin 1s linear infinite;}
+.emergency-header h2{color:#cfa109; margin-bottom:10px;}
+.emergency-btn{padding:12px 25px; border:none; border-radius:10px; font-weight:600; cursor:pointer; margin:5px; color:white;}
+.call-btn{background:#cfa109;}
+.settings-panel{position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); display:none; align-items:center; justify-content:center; z-index:900;}
+.settings-content{background:#cfa109; border-radius:15px; padding:20px; max-width:400px; width:90%;}
+.settings-header{display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;}
+.settings-header h2{color:#7b2cbf;}
+.close-settings-btn{background:none; border:none; color:#94a3b8; font-size:1.5rem; cursor:pointer;}
+.form-group{margin-bottom:15px;}
+.form-group label{display:block; margin-bottom:5px; color:#e2e8f0;}
+.form-group input{width:100%; padding:10px; border-radius:5px; border:1px solid #333; background:#0f0f23; color:white;}
+.save-btn{background:linear-gradient(135deg,#cfa109,#cfa109); color:white; border:none; padding:12px; border-radius:5px; width:100%; cursor:pointer; font-weight:600;}
+.call-options{margin-top:15px; display:flex; flex-direction:column; gap:10px;}
+.call-option-btn{padding:10px; border-radius:5px; background:#f3f4f6; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; transition:all 0.3s ease;}
+.call-option-btn:hover{background:linear-gradient(135deg,#cfa109,#cfa109); color:white; transform:translateY(-2px);}
+.auth-notice{background:rgba(255,193,7,0.1); border:1px solid rgba(255,193,7,0.3); color:#cfa109; padding:10px; border-radius:8px; margin-bottom:20px; text-align:center;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.5;}}
+@keyframes emergencyPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.2);}}
+@keyframes wave{0%,100%{height:8px;}50%{height:20px;}}
+@keyframes spin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+.settings-btn:hover{background:rgba(123,44,191,0.3);}
+.save-btn:hover{transform:translateY(-2px); box-shadow:0 8px 25px rgba(123,44,191,0.4);}
+.instructions strong{color:#cfa109;}
+</style>
+</head>
+<body>
+<div class="container">
+<header class="header">
+    <div class="logo">
+        <div class="logo-icon">🛡</div>
+        <h1>Panic</h1>
+    </div>
+    <p class="tagline">Your AI Guardian - Always listening, always protecting</p>
+</header>
+
+<div id="authNotice" class="auth-notice" style="display:none;">
+    Authentication required for full features. Data stored locally.
+</div>
+
+<div class="status-bar">
+    <div class="status-indicator">
+        <div class="status-dot" id="statusDot"></div>
+        <span id="statusText">Monitoring for safety</span>
+    </div>
+    <button class="settings-btn" id="settingsBtn">⚙</button>
+</div>
+
+<main class="main-interface">
+    <div class="conversation-area" id="conversationArea">
+        <div class="message Panic-message">
+            <div class="message-content">
+                <p>Hello! I'm Panic, your AI safety guardian. I'm always listening for your emergency word. You're never alone.</p>
+                <span class="timestamp" id="welcomeTime"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="voice-indicator">
+        <div class="voice-visualizer">
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+        </div>
+    </div>
+
+    <div class="instructions">
+        <p id="instructionText">Continuously listening for emergency word: "<strong>oranges</strong>"</p>
+    </div>
+</main>
+</div>
+
+<!-- Emergency Panel -->
+<div class="emergency-panel" id="emergencyPanel">
+    <div class="emergency-content">
+        <div class="emergency-icon">🚨</div>
+        <div class="emergency-header">
+            <h2>EMERGENCY ACTIVATED</h2>
+            <p>Choose how to contact help:</p>
+        </div>
+        <div class="call-options">
+            <button class="call-option-btn" id="whatsappCallBtn">💬 WhatsApp Message</button>
+        </div>
+        <button class="emergency-btn" id="cancelEmergencyBtn" style="background:#6b7280; margin-top:15px;">Cancel (False Alarm)</button>
+    </div>
+</div>
+
+<!-- Settings Panel -->
+<div class="settings-panel" id="settingsPanel">
+    <div class="settings-content">
+        <div class="settings-header">
+            <h2>Safety Settings</h2>
+            <button class="close-settings-btn" id="closeSettingsBtn">✕</button>
+        </div>
+        <div class="settings-form">
+            <div class="form-group">
+                <label>Your Name</label>
+                <input type="text" id="userName" placeholder="What should Panic call you?">
+            </div>
+            <div class="form-group">
+                <label>Emergency Trigger Word</label>
+                <input type="text" id="emergencyWord" placeholder="oranges">
+            </div>
+            <div class="form-group">
+                <label>Emergency WhatsApp Contacts (comma-separated)</label>
+                <input type="text" id="emergencyWhatsApp" placeholder="+27661234567,+27669876543">
+            </div>
+        </div>
+        <button class="save-btn" id="saveSettingsBtn">Save Settings</button>
+    </div>
+</div>
+
+<script>
+class PanicGuardian {
+    constructor(){
+        this.recognition=null;
+        this.userProfile=this.loadUserProfile();
+        this.emergencyActivated=false;
+        this.init();
+    }
+
+    init(){
+        this.setupEventListeners();
+        this.setupSpeechRecognition();
+        this.displayWelcomeMessage();
+    }
+
+    setupEventListeners(){
+        document.getElementById('settingsBtn').addEventListener('click',()=>this.openSettings());
+        document.getElementById('closeSettingsBtn').addEventListener('click',()=>this.closeSettings());
+        document.getElementById('saveSettingsBtn').addEventListener('click',()=>this.saveSettings());
+        document.getElementById('cancelEmergencyBtn').addEventListener('click',()=>this.cancelEmergency());
+        document.getElementById('whatsappCallBtn').addEventListener('click',()=>this.sendWhatsAppEmergency());
+    }
+
+    setupSpeechRecognition(){
+        const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+        if(!SpeechRecognition){
+            this.addMessage('Panic',"⚠ Your browser doesn't support voice monitoring.");
+            return;
+        }
+        this.recognition=new SpeechRecognition();
+        this.recognition.continuous=true;
+        this.recognition.interimResults=true;
+        this.recognition.lang='en-US';
+
+        this.recognition.onresult=(event)=>{
+            let transcript='';
+            for(let i=event.resultIndex;i<event.results.length;i++){
+                if(event.results[i].isFinal){transcript+=event.results[i][0].transcript;}
+            }
+            if(transcript.trim()){this.processTranscript(transcript.toLowerCase());}
+        };
+
+        this.recognition.start();
+    }
+
+    processTranscript(transcript){
+        const emergencyWord=(this.userProfile.emergencyWord||'oranges').toLowerCase();
+        if(transcript.includes(emergencyWord)){this.activateEmergency();}
+    }
+
+    addMessage(type,message){
+        const conversationArea=document.getElementById('conversationArea');
+        const messageDiv=document.createElement('div');
+        messageDiv.className=`message ${type}-message`;
+        const timestamp=new Date().toLocaleTimeString();
+        messageDiv.innerHTML=`<div class="message-content"><p>${message}</p><span class="timestamp">${timestamp}</span></div>`;
+        conversationArea.appendChild(messageDiv);
+        conversationArea.scrollTop=conversationArea.scrollHeight;
+    }
+
+    displayWelcomeMessage(){
+        const name=this.userProfile.name||'friend';
+        const welcomeMessage=`Hello ${name}! I'm Panic, your AI safety guardian. I'm always listening for "${this.userProfile.emergencyWord||'oranges'}".`;
+        const welcomeElement=document.querySelector('.Panic-message .message-content p');
+        if(welcomeElement){welcomeElement.textContent=welcomeMessage;}
+        document.getElementById('instructionText').innerHTML=`Continuously listening for emergency word: "<strong>${this.userProfile.emergencyWord||'oranges'}</strong>"`;
+    }
+
+    activateEmergency(){
+        if(this.emergencyActivated) return;
+        this.emergencyActivated=true;
+        document.getElementById('emergencyPanel').style.display='flex';
+        document.getElementById('statusDot').className='status-dot emergency';
+        this.addMessage('Panic','🚨 EMERGENCY DETECTED: Preparing WhatsApp messages...');
+        this.sendWhatsAppEmergency();
+    }
+
+    cancelEmergency(){
+        this.emergencyActivated=false;
+        document.getElementById('emergencyPanel').style.display='none';
+        document.getElementById('statusDot').className='status-dot';
+        this.addMessage('Panic','Emergency canceled. Resuming monitoring.');
+    }
+
+    sendWhatsAppEmergency(){
+        const contacts=(this.userProfile.emergencyWhatsApp||'').split(',').map(c=>c.trim()).filter(c=>c);
+        if(!contacts.length){this.addMessage('Panic','⚠ No WhatsApp contacts configured.'); return;}
+        const message=`🚨 EMERGENCY! Please help immediately!`;
+        contacts.forEach(number=>{
+            const url=`https://wa.me/${number.replace(/[^0-9]/g,'')}?text=${encodeURIComponent(message)}`;
+            window.open(url,'_blank');
+            this.addMessage('Panic',`💬 WhatsApp message prepared for: ${number}`);
+        });
+    }
+
+    openSettings(){document.getElementById('settingsPanel').style.display='flex';}
+    closeSettings(){document.getElementById('settingsPanel').style.display='none';}
+
+    saveSettings(){
+        this.userProfile={
+            name:document.getElementById('userName').value,
+            emergencyWord:document.getElementById('emergencyWord').value,
+            emergencyWhatsApp:document.getElementById('emergencyWhatsApp').value
+        };
+        localStorage.setItem('panicUserProfile',JSON.stringify(this.userProfile));
+        this.displayWelcomeMessage();
+        this.closeSettings();
+    }
+
+    loadUserProfile(){
+        const profile=localStorage.getItem('panicUserProfile');
+        return profile?JSON.parse(profile):{};
+    }
+}
+
+const panic=new PanicGuardian();
+</script>
+</body>
+</html>
