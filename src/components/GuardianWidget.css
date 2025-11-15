@@ -1,0 +1,252 @@
+/* src/components/GuardianWidget.css */
+
+/* Main trigger button (the "circle") */
+.guardian-trigger-button {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, #1a1a2e, #16213e);
+  border: 1px solid rgba(123, 44, 191, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 998;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  transition: all 0.3s ease;
+}
+
+.guardian-trigger-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 8px 25px rgba(123, 44, 191, 0.4);
+}
+
+.guardian-status-dot {
+  width: 12px;
+  height: 12px;
+  background: #10b981; /* Green */
+  border-radius: 50%;
+  animation: guardian-pulse 1.5s infinite;
+}
+
+.guardian-status-dot.listening {
+  background: #10b981; /* Green */
+}
+
+.guardian-status-dot.not-listening {
+  background: #f43f5e; /* Red */
+}
+
+.guardian-status-dot.emergency {
+  background: #cfa109;
+  animation: guardian-emergencyPulse 0.5s infinite;
+}
+
+/* Base styles for all panels (Chat, Settings, Emergency) */
+.guardian-panel-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.guardian-panel-content {
+  background: #1a1a2e;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  padding: 20px;
+  max-width: 400px;
+  width: 90%;
+  color: #e2e8f0;
+}
+
+/* Chat Panel */
+.guardian-chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.guardian-chat-header h2 {
+  color: #cfa109;
+}
+
+.guardian-close-btn {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.guardian-conversation-area {
+  height: 300px;
+  overflow-y: auto;
+  margin-bottom: 20px;
+  padding: 15px;
+  background: rgba(15, 23, 42, 0.3);
+  border-radius: 10px;
+}
+
+.guardian-message {
+  margin-bottom: 15px;
+  display: flex;
+}
+.guardian-message.Panic-message {
+  justify-content: flex-start;
+}
+.guardian-message-content {
+  max-width: 80%;
+  padding: 12px 15px;
+  border-radius: 15px;
+  background: rgba(148, 163, 184, 0.1);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+}
+.guardian-timestamp {
+  font-size: 0.7rem;
+  opacity: 0.7;
+  margin-top: 5px;
+}
+.guardian-instructions {
+  text-align: center;
+  color: #94a3b8;
+  font-size: 0.9rem;
+}
+.guardian-instructions strong {
+  color: #cfa109;
+}
+
+/* Settings Panel */
+.guardian-settings-content {
+  background: #16213e;
+}
+
+.guardian-form-group {
+  margin-bottom: 15px;
+}
+.guardian-form-group label {
+  display: block;
+  margin-bottom: 5px;
+  color: #e2e8f0;
+}
+.guardian-form-group input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #333;
+  background: #0f0f23;
+  color: white;
+}
+.guardian-save-btn {
+  background: linear-gradient(135deg, #cfa109, #cfa109);
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 5px;
+  width: 100%;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* Emergency Panel */
+.guardian-emergency-panel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 107, 53, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.guardian-emergency-content {
+  background: white;
+  border-radius: 15px;
+  padding: 30px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  color: #1a1a2e; /* Dark text on light background */
+}
+.guardian-emergency-icon {
+  font-size: 3rem;
+  margin-bottom: 15px;
+  animation: guardian-spin 1s linear infinite;
+}
+.guardian-emergency-header h2 {
+  color: #cfa109;
+  margin-bottom: 10px;
+}
+.guardian-emergency-btn {
+  padding: 12px 25px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  margin: 5px;
+  color: white;
+}
+.guardian-call-options {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.guardian-call-option-btn {
+  padding: 10px;
+  border-radius: 5px;
+  background: #f3f4f6;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  color: #1a1a2e;
+}
+.guardian-call-option-btn:hover {
+  background: linear-gradient(135deg, #cfa109, #cfa109);
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* Animations */
+@keyframes guardian-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+@keyframes guardian-emergencyPulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
+@keyframes guardian-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

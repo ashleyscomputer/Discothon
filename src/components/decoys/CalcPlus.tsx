@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Delete } from "lucide-react";
+import { GuardianWidget } from '../GuardianWidget';
 
 interface CalcPlusProps {
   onTriggerPanic?: () => void;
@@ -222,6 +223,7 @@ export default function CalcPlus({ onTriggerPanic }: CalcPlusProps) {
           </Button>
         </div>
       </div>
+      <GuardianWidget />
     </div>
   );
 }

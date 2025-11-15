@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { GuardianWidget } from '../GuardianWidget';
 
 interface Transaction {
   id: string;
@@ -174,6 +175,7 @@ export default function BudgetBuddy({ onTriggerPanic }: BudgetBuddyProps) {
           ))}
         </div>
       </main>
+      <GuardianWidget />
     </div>
   );
 }

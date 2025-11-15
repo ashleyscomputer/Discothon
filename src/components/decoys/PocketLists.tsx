@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Plus, Search, Trash2, Check, Circle, ArrowLeft } from "lucide-react";
+import { Plus, Search, Trash2, Circle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
+import { GuardianWidget } from "../GuardianWidget";
 
 interface TodoItem {
   id: string;
@@ -12,32 +13,13 @@ interface TodoItem {
   list: string;
 }
 
-interface PocketListsProps {
-  onTriggerPanic?: () => void;
-}
-
-export default function PocketLists({ onTriggerPanic }: PocketListsProps) {
+export default function PocketLists() {
   const [todos, setTodos] = useState<TodoItem[]>([
     { id: "1", text: "Buy groceries", completed: false, list: "Personal" },
     { id: "2", text: "Call dentist", completed: true, list: "Personal" },
     { id: "3", text: "Finish report", completed: false, list: "Work" },
   ]);
   const [newTodo, setNewTodo] = useState("");
-  const [longPressTimer, setLongPressTimer] = useState<NodeJS.Timeout | null>(null);
-
-  const handleLongPressStart = () => {
-    const timer = setTimeout(() => {
-      onTriggerPanic?.();
-    }, 2000);
-    setLongPressTimer(timer);
-  };
-
-  const handleLongPressEnd = () => {
-    if (longPressTimer) {
-      clearTimeout(longPressTimer);
-      setLongPressTimer(null);
-    }
-  };
 
   const addTodo = () => {
     if (newTodo.trim()) {
@@ -55,9 +37,11 @@ export default function PocketLists({ onTriggerPanic }: PocketListsProps) {
   };
 
   const toggleTodo = (id: string) => {
-    setTodos(todos.map((todo) =>
-      todo.id === id ? { ...todo, completed: !todo.completed } : todo
-    ));
+    setTodos(
+      todos.map((todo) =>
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo
+      )
+    );
   };
 
   const deleteTodo = (id: string) => {
@@ -67,16 +51,8 @@ export default function PocketLists({ onTriggerPanic }: PocketListsProps) {
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b bg-card px-4 py-4">
-        <h1
-          className="text-2xl font-bold mb-3"
-          onTouchStart={handleLongPressStart}
-          onTouchEnd={handleLongPressEnd}
-          onMouseDown={handleLongPressStart}
-          onMouseUp={handleLongPressEnd}
-          onMouseLeave={handleLongPressEnd}
-        >
-          Pocket Lists
-        </h1>
+        <h1 className="text-2xl font-bold mb-3">Pocket Lists</h1>
+
         <div className="flex gap-2">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -114,6 +90,7 @@ export default function PocketLists({ onTriggerPanic }: PocketListsProps) {
                   onCheckedChange={() => toggleTodo(todo.id)}
                   className="shrink-0"
                 />
+
                 <span
                   className={`flex-1 transition-all ${
                     todo.completed
@@ -123,6 +100,7 @@ export default function PocketLists({ onTriggerPanic }: PocketListsProps) {
                 >
                   {todo.text}
                 </span>
+
                 <Button
                   variant="ghost"
                   size="icon"
@@ -139,10 +117,14 @@ export default function PocketLists({ onTriggerPanic }: PocketListsProps) {
         {todos.length === 0 && (
           <div className="text-center py-12">
             <Circle className="w-12 h-12 text-muted-foreground/30 mx-auto mb-3" />
-            <p className="text-muted-foreground">No tasks yet. Add one above!</p>
+            <p className="text-muted-foreground">
+              No tasks yet. Add one above!
+            </p>
           </div>
         )}
       </main>
+
+      <GuardianWidget />
     </div>
   );
 }

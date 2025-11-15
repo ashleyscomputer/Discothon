@@ -1,3 +1,5 @@
+// 1. Import useNavigate
+import { useNavigate } from "react-router-dom";
 import { Shield, FileText, Calculator, ListTodo, DollarSign, Timer } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -13,7 +15,7 @@ interface DecoyOption {
 
 const decoyOptions: DecoyOption[] = [
   {
-    id: "notely",
+    id: "notely", // This id will map to our route
     name: "Notely",
     icon: FileText,
     description: "Looks like a normal notes app for quick thoughts and lists.",
@@ -21,7 +23,7 @@ const decoyOptions: DecoyOption[] = [
     color: "from-sky-500/15 via-sky-500/5 to-sky-300/10",
   },
   {
-    id: "calc",
+    id: "calc", // This id will map to our route
     name: "Calc+",
     icon: Calculator,
     description: "Clean calculator for “I’m just doing my budget” energy.",
@@ -29,7 +31,7 @@ const decoyOptions: DecoyOption[] = [
     color: "from-emerald-500/15 via-emerald-500/5 to-emerald-300/10",
   },
   {
-    id: "lists",
+    id: "lists", // This id will map to our route
     name: "Pocket Lists",
     icon: ListTodo,
     description: "Task & checklist style app for errands, chores and reminders.",
@@ -37,7 +39,7 @@ const decoyOptions: DecoyOption[] = [
     color: "from-amber-500/15 via-amber-500/5 to-amber-300/10",
   },
   {
-    id: "budget",
+    id: "budget", // This id will map to our route
     name: "Budget Buddy",
     icon: DollarSign,
     description: "Simple money tracker for expenses and goals.",
@@ -45,7 +47,7 @@ const decoyOptions: DecoyOption[] = [
     color: "from-teal-500/15 via-teal-500/5 to-teal-300/10",
   },
   {
-    id: "timer",
+    id: "timer", // This id will map to our route
     name: "Study Timer",
     icon: Timer,
     description: "Focus / pomodoro timer for study sessions and gym sets.",
@@ -54,11 +56,19 @@ const decoyOptions: DecoyOption[] = [
   },
 ];
 
-interface DecoySelectorProps {
-  onSelectDecoy: (decoyId: string) => void;
-}
+// 2. We need to map the decoy IDs to the routes we defined in App.tsx
+const decoyPaths: { [key: string]: string } = {
+  notely: "/decoy/notely",
+  calc: "/decoy/calcplus",
+  lists: "/decoy/pocketlists",
+  budget: "/decoy/budgetbuddy",
+  timer: "/decoy/studytimer",
+};
 
-export default function DecoySelector({ onSelectDecoy }: DecoySelectorProps) {
+// 3. Remove DecoySelectorProps and the onSelectDecoy prop
+export default function DecoySelector() {
+  const navigate = useNavigate(); // 4. Initialize the navigate function
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-slate-50">
       <div className="max-w-6xl mx-auto px-4 py-10 lg:py-16">
@@ -118,7 +128,8 @@ export default function DecoySelector({ onSelectDecoy }: DecoySelectorProps) {
                 <button
                   key={option.id}
                   type="button"
-                  onClick={() => onSelectDecoy(option.id)}
+                  // 5. Update onClick to use navigate with the correct path
+                  onClick={() => navigate(decoyPaths[option.id])}
                   className="group relative flex flex-col justify-between rounded-2xl border border-slate-800/80 bg-gradient-to-br from-slate-900/90 via-slate-900/95 to-slate-950/95 p-4 text-left shadow-sm transition hover:-translate-y-1 hover:border-rose-500/80 hover:shadow-xl hover:shadow-rose-500/20"
                 >
                   <div className="flex items-start gap-3">
@@ -166,20 +177,7 @@ export default function DecoySelector({ onSelectDecoy }: DecoySelectorProps) {
               like a normal setup screen.
             </p>
             <ul className="space-y-3 text-sm text-slate-300">
-              <li className="flex gap-2">
-                <span className="mt-1 h-1.5 w-1.5 rounded-full bg-rose-400" aria-hidden="true" />
-                <span>
-                  <span className="font-semibold text-rose-300">Cover story ready.</span> Each option matches a believable
-                  everyday app that fits into campus, work or home life.
-                </span>
-              </li>
-              <li className="flex gap-2">
-                <span className="mt-1 h-1.5 w-1.5 rounded-full bg-rose-400" aria-hidden="true" />
-                <span>
-                  <span className="font-semibold text-rose-300">Judge-friendly narrative.</span> During demos you can explain
-                  how the disguise keeps survivors safe while still being easy to use under stress.
-                </span>
-              </li>
+              
               <li className="flex gap-2">
                 <span className="mt-1 h-1.5 w-1.5 rounded-full bg-rose-400" aria-hidden="true" />
                 <span>

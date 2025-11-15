@@ -3,6 +3,7 @@ import { Play, Pause, RotateCcw, Coffee, BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { GuardianWidget } from '../GuardianWidget';
 
 interface StudyTimerProps {
   onTriggerPanic?: () => void;
@@ -195,6 +196,7 @@ export default function StudyTimer({ onTriggerPanic }: StudyTimerProps) {
           </Card>
         </div>
       </main>
+      <GuardianWidget />
     </div>
   );
 }
