@@ -12,6 +12,8 @@ import BudgetBuddy from "@/components/decoys/BudgetBuddy";
 import PocketLists from "@/components/decoys/PocketLists";
 import StudyTimer from "@/components/decoys/StudyTimer";
 import NotFound from "@/pages/NotFound";
+import LoginPage from "@/pages/LoginPage";
+import RegisterPage from "@/pages/RegisterPage";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +33,7 @@ const App = () => (
           <Route path="/decoy/budgetbuddy" element={<BudgetBuddy />} />
           <Route path="/decoy/pocketlists" element={<PocketLists />} />
           <Route path="/decoy/studytimer" element={<StudyTimer />} />
+          <Route path="/login" element={<LoginPage />} />
           
           {/* Your original catch-all route */}
           <Route path="*" element={<NotFound />} />
